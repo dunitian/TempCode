@@ -10,7 +10,7 @@ namespace _06.TaskException
         {
             Console.WriteLine("主线程启动~~~{0}\n", Thread.CurrentThread.ManagedThreadId);
             CancellationTokenSource cts = new CancellationTokenSource(10);//设置10毫秒后取消，看看抛不抛异常
-            Task<int> task = new Task<int>(n => GetNum(Convert.ToInt32(n)), 1000, cts.Token);
+            Task<int> task = new Task<int>(n => GetNum(Convert.Toint(n)), 1000, cts.Token);
             task.Start();
             try
             {
