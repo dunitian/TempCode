@@ -32,6 +32,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "2016-09-05\Test\Test.csproj", "{2149BB1F-B13B-405A-A643-B9C0B700906F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2016-09-05", "2016-09-05", "{C9BF920F-FC9F-4E00-8256-D1BDA36A05A2}"
+	ProjectSection(SolutionItems) = preProject
+		2016-09-05\jieba.NET.0.38.2.zip = 2016-09-05\jieba.NET.0.38.2.zip
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
