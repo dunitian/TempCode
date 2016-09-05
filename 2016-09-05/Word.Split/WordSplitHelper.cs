@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using JiebaNet.Segmenter;
 using System.Collections.Generic;
+using JiebaNet.Analyser;
 
 namespace LoTLib.Word.Split
 {
@@ -23,7 +24,7 @@ namespace LoTLib.Word.Split
         /// 精确模式-不带HMM
         /// </summary>
         Other
-    } 
+    }
     #endregion
 
     /// <summary>
@@ -31,6 +32,7 @@ namespace LoTLib.Word.Split
     /// </summary>
     public static partial class WordSplitHelper
     {
+        #region 公用系列
         /// <summary>
         /// 获取分词之后的字符串集合
         /// </summary>
@@ -54,14 +56,23 @@ namespace LoTLib.Word.Split
         }
 
         /// <summary>
-        /// 获取分词之后的字符串
+        /// 提取文章关键词集合
         /// </summary>
         /// <param name="objStr"></param>
-        /// <param name="type"></param>
         /// <returns></returns>
-        public static string GetSplitWordStr(this string objStr, JiebaTypeEnum type = JiebaTypeEnum.Default)
+        public static IEnumerable<string> GetArticleKeywords(string objStr)
         {
-            var words = GetSplitWords(objStr, type);
+            var idf = new TfidfExtractor();
+            return idf.ExtractTags(objStr, 10, Constants.NounAndVerbPos);//名词和动词
+        }
+
+        /// <summary>
+        /// 返回拼接后的字符串
+        /// </summary>
+        /// <param name="words"></param>
+        /// <returns></returns>
+        public static string JoinKeyWords(IEnumerable<string> words)
+        {
             //没结果则返回空字符串
             if (words == null || words.Count() < 1)
             {
@@ -70,5 +81,31 @@ namespace LoTLib.Word.Split
             words = words.Distinct();//有时候词有重复的，得自己处理一下
             return string.Join(",", words);//根据个人需求返回
         }
+        #endregion
+
+        #region 扩展相关
+        /// <summary>
+        /// 获取分词之后的字符串
+        /// </summary>
+        /// <param name="objStr"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static string GetSplitWordStr(this string objStr, JiebaTypeEnum type = JiebaTypeEnum.Default)
+        {
+            var words = GetSplitWords(objStr, type);
+            return JoinKeyWords(words);
+        }
+
+        /// <summary>
+        /// 提取文章关键词字符串
+        /// </summary>
+        /// <param name="objStr"></param>
+        /// <returns></returns>
+        public static string GetArticleKeywordStr(this string objStr)
+        {
+            var words = GetArticleKeywords(objStr);
+            return JoinKeyWords(words);
+        } 
+        #endregion
     }
 }
