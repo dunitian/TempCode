@@ -38,6 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2016-09-05", "2016-09-05", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2016-09-22", "2016-09-22", "{C51ECFC0-92F6-4164-9878-21CA1A64307A}"
 	ProjectSection(SolutionItems) = preProject
+		2016-09-22\Logo.psd = 2016-09-22\Logo.psd
 		2016-09-22\逆天水印.psd = 2016-09-22\逆天水印.psd
 	EndProjectSection
 EndProject
