@@ -1,28 +1,10 @@
-﻿#region Test1
-//using System;
-
-//namespace Twitter_Snowflake
-//{
-//    class Program
-//    {
-//        static void Main(string[] args)
-//        {
-//            for (int i = 0; i < 1000; i++)
-//            {
-//                Console.WriteLine($"开始执行 {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ffffff")}------{Snowflake.Instance().GetId()} \n");
-//            }
-//            Console.ReadKey();
-//        }
-//    }
-//} 
-#endregion
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Twitter_Snowflake
+namespace Snowflake.Net
 {
     class Program
     {
@@ -34,19 +16,22 @@ namespace Twitter_Snowflake
 
         static void Main(string[] args)
         {
-            Task.Run(() => GetUid());
-            Task.Run(() => GetUid());
-            Task.Run(() => GetUid());
+            for (int i = 0; i < 3; i++)
+            {
+                Task.Run(() => GetUid());
+                Task.Run(() => GetUid());
+            }
 
+            Console.WriteLine("稍等10s");
             Task.Run(() => Printf());
             Console.ReadKey();
         }
 
         private static void GetUid()
         {
-            for (int i = 0; i < 10000; i++)
+            for (int i = 0; i < 50000; i++)
             {
-                var id = Snowflake.Instance().GetId();
+                var id = Snowflake.Init().GetId();
                 //Console.WriteLine($"开始执行 {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ffffff")}------{id} \n");
                 list.Add(id);
             }
@@ -55,14 +40,13 @@ namespace Twitter_Snowflake
 
         private static void Printf()
         {
-            while (taskCount != 3)
+            while (taskCount != 6)
             {
                 Thread.Sleep(1000);
-                Console.WriteLine("-----------");
+                Console.WriteLine("------");
             }
             Console.WriteLine(list.Count);
             Console.WriteLine(list.Distinct().Count());
         }
     }
 }
-

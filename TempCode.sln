@@ -52,6 +52,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2016-11-16", "2016-11-16", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twitter_Snowflake", "2016-11-16\Twitter_Snowflake\Twitter_Snowflake.csproj", "{3A3EBC3F-8920-4FC2-B8C9-2AB04D3BAF05}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twitter_Snowflake_New", "2016-11-16\Twitter_Snowflake_New\Twitter_Snowflake_New.csproj", "{CDBB9F21-3D75-47EE-B85D-054829A3FABA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +112,10 @@ Global
 		{3A3EBC3F-8920-4FC2-B8C9-2AB04D3BAF05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A3EBC3F-8920-4FC2-B8C9-2AB04D3BAF05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A3EBC3F-8920-4FC2-B8C9-2AB04D3BAF05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDBB9F21-3D75-47EE-B85D-054829A3FABA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDBB9F21-3D75-47EE-B85D-054829A3FABA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDBB9F21-3D75-47EE-B85D-054829A3FABA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDBB9F21-3D75-47EE-B85D-054829A3FABA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,5 +135,6 @@ Global
 		{66B08DF8-56F0-494F-BAA1-84AFC0DE895D} = {C9BF920F-FC9F-4E00-8256-D1BDA36A05A2}
 		{2149BB1F-B13B-405A-A643-B9C0B700906F} = {C9BF920F-FC9F-4E00-8256-D1BDA36A05A2}
 		{3A3EBC3F-8920-4FC2-B8C9-2AB04D3BAF05} = {E90C1B3F-BD76-48E2-82FA-F5685D307C8A}
+		{CDBB9F21-3D75-47EE-B85D-054829A3FABA} = {E90C1B3F-BD76-48E2-82FA-F5685D307C8A}
 	EndGlobalSection
 EndGlobal
