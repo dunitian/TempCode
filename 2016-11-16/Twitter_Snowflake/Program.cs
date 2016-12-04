@@ -26,42 +26,52 @@ namespace Twitter_Snowflake
 {
     class Program
     {
-        /// <summary>
-        /// Task完成总数
-        /// </summary>
+        private static int N = 2000000;
+        private static HashSet<long> set = new HashSet<long>();
+        private static Snowflake worker = new Snowflake(1, 1);
         private static int taskCount = 0;
-        private static List<long> list = new List<long>();
 
         static void Main(string[] args)
         {
-            Task.Run(() => GetUid());
-            Task.Run(() => GetUid());
-            Task.Run(() => GetUid());
+            Task.Run(() => GetID());
+            Task.Run(() => GetID());
+            Task.Run(() => GetID());
 
             Task.Run(() => Printf());
             Console.ReadKey();
-        }
-
-        private static void GetUid()
-        {
-            for (int i = 0; i < 10000; i++)
-            {
-                var id = Snowflake.Instance().GetId();
-                //Console.WriteLine($"开始执行 {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ffffff")}------{id} \n");
-                list.Add(id);
-            }
-            taskCount++;
         }
 
         private static void Printf()
         {
             while (taskCount != 3)
             {
+                Console.WriteLine("...");
                 Thread.Sleep(1000);
-                Console.WriteLine("-----------");
             }
-            Console.WriteLine(list.Count);
-            Console.WriteLine(list.Distinct().Count());
+            Console.WriteLine(set.Count == N * taskCount);
+        }
+
+        private static object o = new object();
+        private static void GetID()
+        {
+            for (var i = 0; i < N; i++)
+            {
+                var id = worker.GetId();
+
+                lock (o)
+                {
+                    if (set.Contains(id))
+                    {
+                        Console.WriteLine("发现重复项 : {0}", id);
+                    }
+                    else
+                    {
+                        set.Add(id);
+                    }
+                }
+
+            }
+            Console.WriteLine($"任务{++taskCount}完成");
         }
     }
 }
