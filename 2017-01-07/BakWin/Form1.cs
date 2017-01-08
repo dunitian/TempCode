@@ -44,10 +44,17 @@ namespace BakWin
         /// <param name="e"></param>
         private void btn1_Click(object sender, EventArgs e)
         {
-            using (var conn = ConnectionFactory.GetConnection())
+            try
             {
-                int i = SQLHelper.ExecuteNoQuery(conn, $"backup database MyBlog to disk=N'{GetFilePath()}'");
-                if (i != 0) { MessageBox.Show("备份成功！"); }
+                using (var conn = ConnectionFactory.GetConnection())
+                {
+                    int i = SQLHelper.ExecuteNoQuery(conn, $"backup database MyBlog to disk=N'{GetFilePath()}'");
+                    if (i != 0) { MessageBox.Show("备份成功！"); }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -58,10 +65,17 @@ namespace BakWin
         /// <param name="e"></param>
         private void btn2_Click(object sender, EventArgs e)
         {
-            using (var conn = ConnectionFactory.GetConnection())
+            try
             {
-                int i = SQLHelper.ExecuteNoQuery(conn, $"backup database MyBlog to disk=N'{GetFilePath()}' with compression");
-                if (i != 0) { MessageBox.Show("备份成功！"); }
+                using (var conn = ConnectionFactory.GetConnection())
+                {
+                    int i = SQLHelper.ExecuteNoQuery(conn, $"backup database MyBlog to disk=N'{GetFilePath()}' with compression");
+                    if (i != 0) { MessageBox.Show("备份成功！"); }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         #endregion
@@ -79,20 +93,27 @@ namespace BakWin
                 MessageBox.Show("备份文件不能为空");
                 return;
             }
-            using (var conn = ConnectionFactory.GetConnection())
+            try
             {
-                //conn.StatisticsEnabled = true;
-                conn.InfoMessage += Conn_InfoMessage;//获取数据库提示
-                foreach (var item in pathList)
+                using (var conn = ConnectionFactory.GetConnection())
                 {
-                    if (!File.Exists(item))
+                    //conn.StatisticsEnabled = true;
+                    conn.InfoMessage += Conn_InfoMessage;//获取数据库提示
+                    foreach (var item in pathList)
                     {
-                        pathList.Remove(item);
-                        continue;
+                        if (!File.Exists(item))
+                        {
+                            pathList.Remove(item);
+                            continue;
+                        }
+                        SQLHelper.ExecuteNoQuery(conn, $"restore verifyonly from disk=N'{item}'");
                     }
-                    SQLHelper.ExecuteNoQuery(conn, $"restore verifyonly from disk=N'{item}'");
+                    //var dic = conn.RetrieveStatistics();
                 }
-                //var dic = conn.RetrieveStatistics();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         private void Conn_InfoMessage(object sender, System.Data.SqlClient.SqlInfoMessageEventArgs e)
@@ -133,19 +154,26 @@ namespace BakWin
                 MessageBox.Show("备份文件不能为空");
                 return;
             }
-            using (var conn = ConnectionFactory.GetConnection())
+            try
             {
-                foreach (var item in pathList)
+                using (var conn = ConnectionFactory.GetConnection())
                 {
-                    if (!File.Exists(item))
+                    foreach (var item in pathList)
                     {
-                        pathList.Remove(item);
-                        continue;
+                        if (!File.Exists(item))
+                        {
+                            pathList.Remove(item);
+                            continue;
+                        }
+                        var dt = SQLHelper.GetDataTable(conn, $"{sql} from disk=N'{item}'");
+                        var form = new DTForm(dt);
+                        form.Show();
                     }
-                    var dt = SQLHelper.GetDataTable(conn, $"{sql} from disk=N'{item}'");
-                    var form = new DTForm(dt);
-                    form.Show();
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         #endregion
