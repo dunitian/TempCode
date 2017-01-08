@@ -198,7 +198,6 @@ namespace BakWin
             #endregion
 
             var task = System.Threading.Tasks.Task.Run(() => ReconverDB());
-            MessageBox.Show("异步执行中，稍等片刻");
             task.ContinueWith(t =>
             {
                 if (t.IsFaulted)
@@ -227,7 +226,7 @@ namespace BakWin
                 {
                     if (!File.Exists(item))
                     {
-                        pathList.Remove(item);
+                        //pathList.Remove(item);
                         continue;
                     }
                     SQLHelper.ExecuteNoQuery(conn, "use master if(Exists(select * from sys.databases where name=N'MyBlog')) drop database MyBlog");
