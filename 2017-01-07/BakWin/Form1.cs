@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace BakWin
 {
@@ -44,20 +45,8 @@ namespace BakWin
         /// <param name="e"></param>
         private void btn1_Click(object sender, EventArgs e)
         {
-            try
-            {
-                using (var conn = ConnectionFactory.GetConnection())
-                {
-                    int i = SQLHelper.ExecuteNoQuery(conn, $"backup database MyBlog to disk=N'{GetFilePath()}'");
-                    if (i != 0) { MessageBox.Show("备份成功！"); }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            BakDB($"backup database MyBlog to disk=N'{GetFilePath()}'");
         }
-
         /// <summary>
         /// 完整备份-压缩
         /// </summary>
@@ -65,17 +54,32 @@ namespace BakWin
         /// <param name="e"></param>
         private void btn2_Click(object sender, EventArgs e)
         {
+            BakDB($"backup database MyBlog to disk=N'{GetFilePath()}' with compression");
+        }
+        private void BakDB(string sql)
+        {
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            int i = 0;
             try
             {
                 using (var conn = ConnectionFactory.GetConnection())
                 {
-                    int i = SQLHelper.ExecuteNoQuery(conn, $"backup database MyBlog to disk=N'{GetFilePath()}' with compression");
-                    if (i != 0) { MessageBox.Show("备份成功！"); }
+                    i = SQLHelper.ExecuteNoQuery(conn, sql);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+            timer.Stop();
+            if (i != 0)
+            {
+                MessageBox.Show($"备份成功！耗时：{timer.ElapsedMilliseconds}");
+            }
+            else
+            {
+                MessageBox.Show($"备份失败！耗时：{timer.ElapsedMilliseconds}");
             }
         }
         #endregion
